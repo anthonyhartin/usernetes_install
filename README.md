@@ -12,4 +12,4 @@ Make sure that port 8080 is open for egress and ingress (at least).
 
 Currently, there is a problem with user delegation on Fedora 35, Fedora 33 and CentOS 8 (at least).
 
-Clone with git pull https://github.com/anthonyhartin/usernetes_install.git
+Obtain the repository with, git pull https://github.com/anthonyhartin/usernetes_install.git
