@@ -17,8 +17,6 @@ if ! sudo -l | grep -q " ALL"; then echo "stopping because you don't have sudo a
 [ "$vercheck" = "fail" ] && { echo "stopping because your kernel version is less than 4.18. please upgrade"; exit; }
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
-if ! cat /sys/fs/cgroup/user.slice/user-$(id -u).slice/user@$(id -u).service/cgroup.subtree_control | grep cpu | grep -q io
-then echo "stopping because user cgroups don't include cpu and io. Have you run the first script and rebooted?"; exit; fi        # check cgroups, should contain cpu and io
 wget https://github.com/rootless-containers/usernetes/releases/download/v20211108.0/usernetes-x86_64.tbz                         # get the latest usernetes release
 tar xjf usernetes-x86_64.tbz
 rm usernetes-x86_64.tbz
@@ -30,5 +28,8 @@ sed '/kubectl -n kube-system wait/ s/./#&/' install.sh > tmp.dat; mv tmp.dat ins
 #docker cp usernetes-node:/home/user/.config/usernetes/master/admin-localhost.kubeconfig docker.kubeconfig
 #export KUBECONFIG=./docker.kubeconfig
 sudo loginctl enable-linger                            # start user services automatically on system startup
-echo "usernetes install completed. "
 echo "add \"export KUBECONFIG=/home/fedora/.config/usernetes/master/admin-localhost.kubeconfig\" to your persistent environment variables."
+if ! cat /sys/fs/cgroup/user.slice/user-$(id -u).slice/user@$(id -u).service/cgroup.subtree_control | grep cpu | grep -q io
+then echo "Warning: the user cgroups do not allow control of the cpu and io."; fi                                                # check cgroups, should contain cpu and io
+echo "usernetes install completed. "
+
