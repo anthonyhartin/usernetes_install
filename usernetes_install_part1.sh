@@ -18,7 +18,10 @@ if ! sudo -l | grep -q " ALL"; then echo "stopping because you don't have sudo a
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 sudo dnf -y install dnf-plugins-core wget bzip2 fuse iptables-legacy conntrack-tools                  # prerequisites for usernetes
-sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo            # docker repo
+if cat /etc/os-release | grep PRETTY_NAME | grep -qi Fedora; then \
+sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo; fi        # docker repo
+if cat /etc/os-release | grep PRETTY_NAME | grep -qi CentOS; then \
+sudo dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo; fi        # centos repo
 sudo dnf -y install docker-ce docker-ce-cli containerd.io                                             # docker and kubernetes utilities
 if ! grep -q docker /etc/group; then sudo groupadd docker;fi                                          #
 sudo usermod -aG docker $workuser                                                                     # allow docker to be used by the non root user
