@@ -18,7 +18,7 @@ if ! grep -q cgroup2 /proc/filesystems; then echo "stopping because cgroups v2 d
 [ "$vercheck" = "fail" ] && { echo "stopping because your kernel version is less than 4.18. please upgrade"; exit; }
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
-sudo dnf -y install dnf-plugins-core wget bzip2 fuse iptables-legacy conntrack-tools                  # prerequisites for usernetes
+sudo dnf -y install dnf-plugins-core wget bzip2 fuse iptables-legacy conntrack-tools net-tools        # prerequisites for usernetes
 if cat /etc/os-release | grep PRETTY_NAME | grep -qi Fedora; then \
 sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo; fi        # docker repo
 if cat /etc/os-release | grep PRETTY_NAME | grep -qi CentOS; then \
