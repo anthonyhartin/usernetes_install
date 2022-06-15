@@ -11,7 +11,7 @@ workuser=$USER
 vercheck=`echo \`uname -r | cut -c 1-4\` 4.18 | awk '{if ($1<$2) print "fail"}'`
 portcheck=`sudo netstat -pna | grep 6443`                                  
 # ---------------first check some prerequisites-----------------
-if ! cat /sys/fs/cgroup/user.slice/user-$(id -u).slice/user@$(id -u).service/cgroup.subtree_control | grep -q cpu | grep -q io
+if ! cat /sys/fs/cgroup/user.slice/user-$(id -u).slice/user@$(id -u).service/cgroup.subtree_control | grep cpu | grep -q io
 then echo "stopping because the user cgroups do not allow control of the cpu and io."; exit; fi                                          # check cgroups, should contain cpu and io
 if ! compgen -u | grep -q $workuser; then echo "stopping because the user $workuser does not exist"; exit; fi
 if ! sudo -l | grep -q " ALL"; then echo "stopping because you don't have sudo access. This is required"; exit; fi
