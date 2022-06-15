@@ -14,7 +14,6 @@ portcheck=`sudo netstat -pna | grep 6443`
 if ! compgen -u | grep -q $workuser; then echo "stopping because the user $workuser does not exist"; exit; fi
 if ! sudo -l | grep -q " ALL"; then echo "stopping because you don't have sudo access. This is required"; exit; fi
 if ! grep -q cgroup2 /proc/filesystems; then echo "stopping because cgroups v2 does not exist. please install"; exit; fi
-# [ ! -f /sys/fs/cgroup/cgroup.controllers ] && { echo "stopping because cgroups do not exist. please install"; exit; }
 [ "$vercheck" = "fail" ] && { echo "stopping because your kernel version is less than 4.18. please upgrade"; exit; }
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
