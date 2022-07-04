@@ -10,6 +10,8 @@ The second script tests for cpu and io control and stops if it is not present.
 
 Make sure that port 8080 is open for egress and ingress (at least).
 
-Currently, there is a problem with user delegation on Fedora 35, Fedora 33 and CentOS 8 (at least).
+The first script does not sucessfully complete (i.e. user delegation fails) when used on a VM created natively with Openstack.
+A workaround, is to create a VM with another virtualisation system (such as Gnome Boxes), run the first script and 
+port the image to an openstack system. Then the second script can be run.
 
 This repository: https://github.com/anthonyhartin/usernetes_install.git
