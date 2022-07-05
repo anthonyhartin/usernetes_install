@@ -25,8 +25,16 @@ rm usernetes-x86_64.tbz
 sudo install -o root -g root -m 0755 usernetes/bin/kubectl /usr/local/bin/kubectl
 cd usernetes
 sed '/kubectl -n kube-system wait/ s/./#&/' install.sh > tmp.dat; mv tmp.dat install.sh; chmod +x install.sh
-./install.sh --cri=containerd                                                                                                    # the usernetes install
+result=1
+while [ $result -ne 0 ]; do
+./install.sh --cri=containerd                                                                  # usernetes install
+    result=$?                                                                                  # test for sucessful completion
+    if [ $result -ne 0 ]; then 
+        sleep 5                                                                                # otherwise, wait a bit before trying again
+    fi
+done
 docker run -td --name usernetes-node -p 127.0.0.1:6443:6443 --privileged ghcr.io/rootless-containers/usernetes --cri=containerd
+export KUBECONFIG=
 docker cp usernetes-node:/home/user/.config/usernetes/master/admin-localhost.kubeconfig docker.kubeconfig
 export KUBECONFIG=$workdir/docker.kubeconfig
 sudo loginctl enable-linger                            # start user services automatically on system startup
