@@ -19,7 +19,8 @@ if ! grep -q cgroup2 /proc/filesystems; then echo "stopping because cgroups v2 d
 [ "$vercheck" = "fail" ] && { echo "stopping because your kernel version is less than 4.18. please upgrade"; exit; }
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
-wget https://github.com/rootless-containers/usernetes/releases/download/v20211108.0/usernetes-x86_64.tbz                         # get the latest usernetes release
+#wget https://github.com/rootless-containers/usernetes/releases/download/v20211108.0/usernetes-x86_64.tbz                         # get the latest usernetes release
+wget https://github.com/rootless-containers/usernetes/releases/download/v20220506.0/usernetes-x86_64.tbz                         # get the latest usernetes release
 tar xjf usernetes-x86_64.tbz
 rm usernetes-x86_64.tbz
 sudo install -o root -g root -m 0755 usernetes/bin/kubectl /usr/local/bin/kubectl
