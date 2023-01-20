@@ -23,6 +23,7 @@ wget https://github.com/rootless-containers/usernetes/releases/download/v2021110
 tar xjf usernetes-x86_64.tbz
 rm usernetes-x86_64.tbz
 sudo install -o root -g root -m 0755 usernetes/bin/kubectl /usr/local/bin/kubectl
+sudo install -o root -g root -m 0755 usernetes/bin/kubelet /usr/local/bin/kubelet
 cd usernetes
 sed '/kubectl -n kube-system wait/ s/./#&/' install.sh > tmp.dat; mv tmp.dat install.sh; chmod +x install.sh
 result=1
