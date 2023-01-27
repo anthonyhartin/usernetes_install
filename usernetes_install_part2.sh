@@ -25,7 +25,8 @@ tar xjf usernetes-x86_64.tbz
 rm usernetes-x86_64.tbz
 sudo install -o root -g root -m 0755 usernetes/bin/kubectl /usr/local/bin/kubectl
 sudo install -o root -g root -m 0755 usernetes/bin/kubelet /usr/local/bin/kubelet
-echo `hostname -i`" "`hostname` | sudo tee -a /etc/hosts
+sudo hostnamectl set-hostname kube-master                                                                                        # change hostname to kube-master
+echo `hostname -i`" "`hostname` | sudo tee -a /etc/hosts                                                                         # associate ip and new hostname
 sudo swapoff -a && sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab                                                            # swap interferes with kubelet
 cd usernetes
 sed '/kubectl -n kube-system wait/ s/./#&/' install.sh > tmp.dat; mv tmp.dat install.sh; chmod +x install.sh
