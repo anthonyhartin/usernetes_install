@@ -20,11 +20,13 @@ if ! grep -q cgroup2 /proc/filesystems; then echo "stopping because cgroups v2 d
 [ -z `whereis newuidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 [ -z `whereis newgidmap | gawk '{print \$2}'` ] && { echo "stopping because there is no newuidmap. please install"; exit; }
 #wget https://github.com/rootless-containers/usernetes/releases/download/v20211108.0/usernetes-x86_64.tbz                         # get the latest usernetes release
-wget https://github.com/rootless-containers/usernetes/releases/download/v20220506.0/usernetes-x86_64.tbz                         # get the latest usernetes release
+wget https://github.com/rootless-containers/usernetes/releases/download/v20221007.0/usernetes-x86_64.tbz                         # get the latest usernetes release
 tar xjf usernetes-x86_64.tbz
 rm usernetes-x86_64.tbz
 sudo install -o root -g root -m 0755 usernetes/bin/kubectl /usr/local/bin/kubectl
 sudo install -o root -g root -m 0755 usernetes/bin/kubelet /usr/local/bin/kubelet
+echo `hostname -i`" "`hostname` | sudo tee -a /etc/hosts
+sudo swapoff -a && sudo sed -i '/ swap / s/^\(.*\)$/#\1/g' /etc/fstab                                                            # swap interferes with kubelet
 cd usernetes
 sed '/kubectl -n kube-system wait/ s/./#&/' install.sh > tmp.dat; mv tmp.dat install.sh; chmod +x install.sh
 result=1
