@@ -41,6 +41,7 @@ done
 #docker run -td --name usernetes-node -p 127.0.0.1:6443:6443 --privileged ghcr.io/rootless-containers/usernetes --cri=containerd
 #docker cp usernetes-node:/home/user/.config/usernetes/master/admin-localhost.kubeconfig docker.kubeconfig
 #export KUBECONFIG=$workdir/docker.kubeconfig
+echo 'export KUBECONFIG=/home/netesuser/.config/usernetes/master/admin-localhost.kubeconfig' | sudo tee -a $HOME/.zshrc
 sudo loginctl enable-linger                            # start user services automatically on system startup
 #echo "Docker serves the usernetes node. Set KUBECONFIG to "$workdir/docker.kubeconfig
 echo "usernetes install completed. "
